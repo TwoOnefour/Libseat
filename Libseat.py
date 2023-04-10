@@ -22,7 +22,7 @@ class LibSeat:
                 result = self.session.get("https://wechat.v2.traceint.com/index.php/reserve/index.html?f=wechat", verify=False)
             if "open" not in result.url:
                 return
-        # self.session.cookies.set("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VySWQiOjI1OTQ5ODQxLCJzY2hJZCI6OTYsImV4cGlyZUF0IjoxNjgxMTM1NDAyfQ.iioxrsi_a5nQPa1Rv6ouTzGf4d0_TJkhVTi7cK4OP-d03MEw5-9QjPF9Rc6xcYK2rQfYQgULsW62sGlQWHKNxqUZ_2kHofvyxXz0XiM39YI5Ws979ytbPVlmODcIB0zj31FSjd_o_hp5FhFPRHTeO-edqxiyUvMcjMi7W6ZlT75zkRYh-NkUTCnxM3cNlYG3WwEW8249-gh_dLK6BAaPw3BSj6MNXUv1Qzd-jXGm57gT62sv9rCrVBAQRttRJhDhKXdC96hL-Myrdep02odJ7JEVXRjYNByMCeSzodvryefmX8WDuK4v2N4-iJUETqWPMp7_nmdRrZPcgUt86AI0Nw")
+        self.session.cookies.set("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VySWQiOjI1OTQ5ODQxLCJzY2hJZCI6OTYsImV4cGlyZUF0IjoxNjgxMTUwODYyfQ.vfUZsV0GQeQhlRGZFi5b5aAd8lTfu56T4CQSa5OkwPWpQb_fSfqXBs5y3udfOMlB1xZU8e_gWnrZmDsikfvxcalMlbCQ98GaHpykYUpWaa4tXeKTrtYtPxTewEHd_5F3HF5jmUeQ98Xm0WHviulOSMJ7NyTMEKhFTkpSLcNUzQ_3GQfMOm0e2dOfc8DCW4aoLlKzqIvgU_kGdVSOv0D4RyQvu0-APqrykPagMnASDX93Fz72a780OMoFT4Q8MTEIXUuy27BIzgDkqWAHuwi-eA0FM-nsoiLs2usg62z3zI5s8W4jOrgg0NabNj8zeTn_6tvcR85VsYfTCfYq8jBpAw")
         self.session.headers.update({"user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.34(0x18002230) NetType/WIFI Language/en"})
         self.session.get("https://wechat.v2.traceint.com/index.php/reserve/index.html?f=wechat", verify=False)
         self.save_token()
@@ -44,9 +44,13 @@ class LibSeat:
         return json.loads(self.session.get("https://wechat.v2.traceint.com/index.php/graphql/", json=data, verify=False).text)["data"]["userAuth"]["reserve"]["libs"]
 
     def get_seat(self, key, libId):
-        data = {"operationName":"reserueSeat","query":"mutation reserueSeat($libId: Int!, $seatKey: String!, $captchaCode: String, $captcha: String!) {\n userAuth {\n reserve {\n reserueSeat(\n libId: $libId\n seatKey: $seatKey\n captchaCode: $captchaCode\n captcha: $captcha\n )\n }\n }\n}","variables":{"seatKey":key,"libId":libId,"captchaCode":"","captcha":""}}\
+        data = {"operationName":"reserueSeat","query":"mutation reserueSeat($libId: Int!, $seatKey: String!, $captchaCode: String, $captcha: String!) {\n userAuth {\n reserve {\n reserueSeat(\n libId: $libId\n seatKey: $seatKey\n captchaCode: $captchaCode\n captcha: $captcha\n )\n }\n }\n}","variables":{"seatKey":key,"libId":libId,"captchaCode":"","captcha":""}}
         self.session.get("https://wechat.v2.traceint.com/index.php/graphql/", json=data, verify=False)
-        
+
+    def keep_token_validate(self):
+        data = {"operationName":"getUserCancleConfig","query":"query getUserCancleConfig {\n userAuth {\n user {\n holdValidate: getSchConfig(fields: \"hold_validate\", extra: true)\n }\n }\n}","variables":{}}
+        self.session.get("https://wechat.v2.traceint.com/index.php/graphql/", json=data, verify=False)
+
     def run(self):
         urllib3.disable_warnings()
         self.get_token()
