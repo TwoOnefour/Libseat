@@ -22,7 +22,7 @@ class LibSeat:
                 result = self.session.get("https://wechat.v2.traceint.com/index.php/reserve/index.html?f=wechat", verify=False)
             if "open" not in result.url:
                 return
-        self.session.cookies.set("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VySWQiOjI1OTQ5ODQxLCJzY2hJZCI6OTYsImV4cGlyZUF0IjoxNjgxMTUwODYyfQ.vfUZsV0GQeQhlRGZFi5b5aAd8lTfu56T4CQSa5OkwPWpQb_fSfqXBs5y3udfOMlB1xZU8e_gWnrZmDsikfvxcalMlbCQ98GaHpykYUpWaa4tXeKTrtYtPxTewEHd_5F3HF5jmUeQ98Xm0WHviulOSMJ7NyTMEKhFTkpSLcNUzQ_3GQfMOm0e2dOfc8DCW4aoLlKzqIvgU_kGdVSOv0D4RyQvu0-APqrykPagMnASDX93Fz72a780OMoFT4Q8MTEIXUuy27BIzgDkqWAHuwi-eA0FM-nsoiLs2usg62z3zI5s8W4jOrgg0NabNj8zeTn_6tvcR85VsYfTCfYq8jBpAw")
+        self.session.cookies.set("Authorization", "")
         self.session.headers.update({"user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.34(0x18002230) NetType/WIFI Language/en"})
         self.session.get("https://wechat.v2.traceint.com/index.php/reserve/index.html?f=wechat", verify=False)
         self.save_token()
